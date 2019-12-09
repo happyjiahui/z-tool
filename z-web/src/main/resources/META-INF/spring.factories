@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.thtf.zhhcxpt.kxzlb.common.web.SelfAutoConfig
+#org.springframework.context.ApplicationListener=com.thtf.zhhcxpt.kxzlb.common.web.KxzlbApplicationListener
