@@ -7,6 +7,7 @@ import org.nustaq.serialization.FSTConfiguration;
 /**
  * @author zhaojinbing
  * @version 2019/8/13 8:54 序列化工具
+ * @since 0.1
  */
 public class FstUtils {
 

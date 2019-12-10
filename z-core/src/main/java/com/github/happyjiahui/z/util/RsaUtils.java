@@ -19,6 +19,7 @@ import com.github.happyjiahui.z.exception.BusinessException;
  * 
  * @author zhaojinbing
  * @version 2019/9/4 13:40
+ * @since 0.1
  */
 public class RsaUtils {
 
@@ -32,7 +33,8 @@ public class RsaUtils {
      * 生成私钥
      * 
      * @param key
-     * @return
+     *            密钥
+     * @return 私钥 {@link PrivateKey}
      */
     public static PrivateKey getPrivateKey(String key) {
         byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(key);
@@ -52,7 +54,8 @@ public class RsaUtils {
      * 生成公钥
      * 
      * @param key
-     * @return
+     *            密钥
+     * @return 公钥 {@link PublicKey}
      */
     public static PublicKey getPublicKey(String key) {
         byte[] keyBytes = DatatypeConverter.parseBase64Binary(key);
@@ -72,8 +75,10 @@ public class RsaUtils {
      * 用公钥加密
      * 
      * @param content
+     *            加密内容
      * @param publicKey
-     * @return
+     *            公钥 {@link PublicKey}
+     * @return 加密后的内容
      */
     private static byte[] encryptByPublicKey(byte[] content, PublicKey publicKey) {
         try {
@@ -90,8 +95,10 @@ public class RsaUtils {
      * 用公钥加密
      * 
      * @param content
+     *            加密内容
      * @param key
-     * @return
+     *            公钥
+     * @return 加密后的内容
      */
     public static byte[] encryptByPublicKey(byte[] content, String key) {
         PublicKey publicKey = RsaUtils.getPublicKey(key);
@@ -102,8 +109,10 @@ public class RsaUtils {
      * 用私钥解密
      * 
      * @param content
+     *            加密内容
      * @param privateKey
-     * @return
+     *            私钥
+     * @return 加密后的内容
      */
     private static byte[] decryptByPrivateKey(byte[] content, PrivateKey privateKey) {
         try {
@@ -120,8 +129,10 @@ public class RsaUtils {
      * 用私钥解密
      * 
      * @param content
+     *            加密后的内容
      * @param key
-     * @return
+     *            私钥
+     * @return 原始内容
      */
     public static byte[] decryptByPrivateKey(byte[] content, String key) {
         PrivateKey privateKey = RsaUtils.getPrivateKey(key);

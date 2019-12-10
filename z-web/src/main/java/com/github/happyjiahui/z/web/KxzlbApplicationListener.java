@@ -9,9 +9,7 @@ import org.springframework.context.ApplicationListener;
 
 /**
  * @author zhaojinbing
- * @Classname KxzlbApplicationListener
- * @Description TODO
- * @Date 2019/12/4 18:21
+ * @version  2019/12/4 18:21
  */
 public class KxzlbApplicationListener implements ApplicationListener<ApplicationStartingEvent> {
     @Override
