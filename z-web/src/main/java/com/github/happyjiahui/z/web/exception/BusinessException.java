@@ -1,9 +1,10 @@
-package com.github.happyjiahui.z.exception;
+package com.github.happyjiahui.z.web.exception;
 
 /**
  * 业务异常
  * 
  * @author zhaojinbing
+ * @version 0.1
  */
 public class BusinessException extends RuntimeException {
 

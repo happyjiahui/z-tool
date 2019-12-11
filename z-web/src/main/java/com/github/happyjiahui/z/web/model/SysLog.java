@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 /**
  * @author zhaojinbing
+ * @version 0.1
  */
 public class SysLog implements Serializable {
     private String id;
@@ -64,7 +65,7 @@ public class SysLog implements Serializable {
     private String reqTime;
 
     /**
-     * @return id
+     * @return 用户id
      */
     public String getId() {
         return id;
@@ -72,6 +73,7 @@ public class SysLog implements Serializable {
 
     /**
      * @param id
+     *            用户id
      */
     public void setId(String id) {
         this.id = id;

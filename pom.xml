@@ -7,10 +7,10 @@
     <groupId>com.github.happyjiahui</groupId>
     <artifactId>z-tool</artifactId>
     <packaging>pom</packaging>
-    <version>0.1.1</version>
+    <version>0.1.4</version>
 
     <name>z-tool</name>
-    <description>Java and spring utility classes</description>
+    <description>Java and spring utilities</description>
     <url>https://github.com/happyjiahui/z-tool</url>
 
     <scm>
@@ -37,7 +37,7 @@
 
     <modules>
         <module>z-core</module>
-<!--        <module>z-web</module>-->
+        <module>z-web</module>
     </modules>
 
     <properties>
@@ -46,7 +46,7 @@
         <java.version>1.8</java.version>
         <compile.version>8</compile.version>
 
-        <kxzlb.version>1.0-SNAPSHOT</kxzlb.version>
+        <z.version>0.1.2</z.version>
         <spring.boot.version>2.0.6.RELEASE</spring.boot.version>
         <junit.version>4.12</junit.version>
         <hamcrest.version>1.3</hamcrest.version>
@@ -55,6 +55,8 @@
         <lombok.version>1.18.4</lombok.version>
         <fst.version>2.57</fst.version>
         <hutool.version>4.6.4</hutool.version>
+        <slf4j.version>1.7.25</slf4j.version>
+        <servlet-api.version>3.1.0</servlet-api.version>
     </properties>
 
     <dependencyManagement>
@@ -70,13 +72,14 @@
             <dependency>
                 <groupId>com.github.happyjiahui</groupId>
                 <artifactId>z-web</artifactId>
-                <version>${kxzlb.version}</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.github.happyjiahui</groupId>
                 <artifactId>z-core</artifactId>
-                <version>${kxzlb.version}</version>
+                <version>${project.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
@@ -107,20 +110,49 @@
                 <artifactId>hutool-core</artifactId>
                 <version>${hutool.version}</version>
             </dependency>
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>${servlet-api.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
     <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.8.1</version>
+                    <configuration>
+                        <source>${compile.version}</source>
+                        <target>${compile.version}</target>
+                        <encoding>UTF-8</encoding>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>3.0.0</version>
+                    <executions>
+                        <execution>
+                            <phase>compile</phase>
+                            <goals>
+                                <goal>jar-no-fork</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
-                <configuration>
-                    <source>${compile.version}</source>
-                    <target>${compile.version}</target>
-                </configuration>
-            </plugin>
             <!-- Javadoc -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -135,6 +167,7 @@
                     </execution>
                 </executions>
             </plugin>
+            <!--单元测试报告-->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
@@ -159,6 +192,14 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <version>2.7</version>
+                <configuration>
+                    <generateBackupPoms>false</generateBackupPoms>
+                </configuration>
             </plugin>
         </plugins>
     </build>

@@ -8,11 +8,14 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.github.happyjiahui.z.exception.BusinessException;
+import com.github.happyjiahui.z.web.exception.BusinessException;
 import com.github.happyjiahui.z.web.model.R;
 
 /**
+ * spring web 异常统一管理
+ * 
  * @author zhaojinbing
+ * @version 0.1
  */
 @ControllerAdvice
 public class ExceptionAdvice {

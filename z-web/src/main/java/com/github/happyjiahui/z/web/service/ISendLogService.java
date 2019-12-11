@@ -1,10 +1,10 @@
 package com.github.happyjiahui.z.web.service;
 
 /**
+ * 发送日志服务
+ * 
  * @author zhaojinbing
- * @Classname ISendLogService
- * @Description TODO
- * @Date 2019/12/3 10:07
+ * @version 0.1
  */
 public interface ISendLogService {
 
@@ -12,6 +12,7 @@ public interface ISendLogService {
      * 发送日志
      * 
      * @param log
+     *            日志内容
      */
     void sendLog(String log);
 

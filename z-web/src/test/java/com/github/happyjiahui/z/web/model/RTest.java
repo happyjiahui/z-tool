@@ -7,6 +7,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.Assert;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+
 /**
  * @author zhaojinbing
  * @Classname RTest
@@ -15,10 +20,59 @@ import java.util.Map;
  */
 public class RTest {
 
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
+
+    @Test
+    public void exceptionTest() {
+        thrown.expect(IllegalArgumentException.class);
+        thrown.expectMessage("传入的参数必须是偶数");
+        R.ok("a");
+    }
+
+    @Test
+    public void exception2Test() {
+        R r = R.ok(2, "a");
+        Assert.assertNull(r.get(2));
+
+    }
+
     @org.junit.Test
     public void getSuccessTest() {
         R r = R.ok("result", "hello world");
         assertTrue(r.success());
+    }
+
+    @Test
+    public void okMapTest() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("a", 1);
+        map.put("b", 2);
+        R r = R.ok(map);
+
+        int a = r.getValue("a", Integer.class);
+        int b = r.getValue("b", Integer.class);
+
+        Assert.assertTrue(r.success());
+        Assert.assertEquals(a, 1);
+        Assert.assertEquals(b, 2);
+    }
+
+    @Test
+    public void errorTest() {
+        R r = R.error("某值为null");
+        String errorMessage = r.getErrorMessage();
+        Assert.assertEquals(errorMessage, "某值为null");
+    }
+
+    @Test
+    public void error2Test() {
+        R r = R.error("某值为null", "a", 2);
+        String errorMessage = r.getErrorMessage();
+        Assert.assertEquals(errorMessage, "某值为null");
+
+        int a = r.getValue("a", Integer.class);
+        Assert.assertEquals(a, 2);
     }
 
     @org.junit.Test
@@ -80,7 +134,14 @@ public class RTest {
         assertEquals(12, listValue.get(0).get("age"));
     }
 
-    public class User {
+    @Test
+    public void getNullValueTest() {
+        R r = R.ok("a", 2);
+        Integer b = r.getValue("b", Integer.class);
+        Assert.assertNull(b);
+    }
+
+    public static class User {
         private String name;
         private Integer age;
 

@@ -12,7 +12,7 @@ import javax.xml.bind.DatatypeConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.github.happyjiahui.z.exception.BusinessException;
+import com.github.happyjiahui.z.exception.UtilException;
 
 /**
  * 非对称加密工具类
@@ -45,7 +45,7 @@ public class RsaUtils {
             privateKey = keyFactory.generatePrivate(keySpec);
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
-            throw new BusinessException("生成私钥失败", e);
+            throw new UtilException("生成私钥失败", e);
         }
         return privateKey;
     }
@@ -66,7 +66,7 @@ public class RsaUtils {
             publicKey = keyFactory.generatePublic(keySpec);
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
-            throw new BusinessException("生成公钥失败", e);
+            throw new UtilException("生成公钥失败", e);
         }
         return publicKey;
     }
@@ -87,7 +87,7 @@ public class RsaUtils {
             return cipher.doFinal(content);
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
-            throw new BusinessException("用公钥加密失败", e);
+            throw new UtilException("用公钥加密失败", e);
         }
     }
 
@@ -121,7 +121,7 @@ public class RsaUtils {
             return cipher.doFinal(content);
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
-            throw new BusinessException("用私钥解密失败", e);
+            throw new UtilException("用私钥解密失败", e);
         }
     }
 

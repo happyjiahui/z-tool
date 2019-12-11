@@ -7,6 +7,7 @@ import java.lang.annotation.Target;
 
 /**
  * @author zhaojinbing
+ * @version 0.1
  */
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)

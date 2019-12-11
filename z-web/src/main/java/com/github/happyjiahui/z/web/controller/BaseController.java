@@ -13,13 +13,19 @@ import org.springframework.validation.FieldError;
 import com.alibaba.fastjson.JSON;
 
 /**
+ * controller基类，提供参数校验等功能。
+ * 
  * @author zhaojinbing
- * @Classname BaseController
- * @Description TODO
- * @Date 2019/12/2 15:56
+ * @version 0.1
  */
 public class BaseController {
 
+    /**
+     * 校验参数
+     * 
+     * @param result
+     *            {@link BindingResult}
+     */
     protected void checkBindingResult(BindingResult result) {
         if (result.hasErrors()) {
             List<Map<String, Object>> errorMapList = new ArrayList<>();
