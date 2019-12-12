@@ -171,4 +171,5 @@ hs_err_pid*
 *.iml
 
 node_modules
+z-core/rocksDbTest
 
