@@ -20,14 +20,10 @@ import com.github.happyjiahui.z.web.service.ISendLogService;
 @ComponentScan("com.github.happyjiahui.z.web.advice")
 public class SelfAutoConfig implements WebMvcConfigurer {
 
-    private final ISendLogService sendLogService;
-    @Value("${kxzlb.web.enable-log-interceptor:false}")
-    private Boolean enableLogInterceptor;
-
     @Autowired(required = false)
-    public SelfAutoConfig(ISendLogService sendLogService) {
-        this.sendLogService = sendLogService;
-    }
+    private ISendLogService sendLogService;
+    @Value("${z.web.enable-log-interceptor:false}")
+    private Boolean enableLogInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {

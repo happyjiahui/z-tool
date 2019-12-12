@@ -16,6 +16,7 @@ import com.alibaba.fastjson.JSON;
 import com.github.happyjiahui.z.util.DateTimeUtils;
 import com.github.happyjiahui.z.util.HttpUtils;
 import com.github.happyjiahui.z.util.IdUtils;
+import com.github.happyjiahui.z.util.JsonUtils;
 import com.github.happyjiahui.z.web.annotation.RecordLog;
 import com.github.happyjiahui.z.web.model.SysLog;
 import com.github.happyjiahui.z.web.service.ISendLogService;
@@ -56,7 +57,7 @@ public class LogInterceptor extends HandlerInterceptorAdapter {
         sysLog.setUrl(httpServletRequest.getServletPath());
         sysLog.setReqMethod(httpServletRequest.getMethod());
         Map<String, String[]> reqParameterMap = httpServletRequest.getParameterMap();
-        sysLog.setReqParameter(JSON.toJSONString(reqParameterMap));
+        sysLog.setReqParameter(JsonUtils.toString(reqParameterMap));
         sysLog.setIp(HttpUtils.getIpAddr(httpServletRequest));
 
         String username = httpServletRequest.getHeader("username");

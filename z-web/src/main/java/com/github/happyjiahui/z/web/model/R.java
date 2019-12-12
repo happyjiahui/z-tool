@@ -133,6 +133,7 @@ public class R extends HashMap<String, Object> {
      *            value的类型
      * @return value
      */
+    @SuppressWarnings("unchecked")
     public <T> T getValue(String key, Class<T> clazz) {
         Object value = this.get(key);
         if (value == null) {
