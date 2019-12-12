@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.github.happyjiahui.z.web.SelfAutoConfig
-#org.springframework.context.ApplicationListener=KxzlbApplicationListener
+org.springframework.context.ApplicationListener=ZApplicationListener
