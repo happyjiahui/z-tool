@@ -1,0 +1,28 @@
+{
+  "name": "z-tool",
+  "version": "0.1.6",
+  "description": "z-tool",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "cz-conventional-changelog": "^3.0.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/happyjiahui/z-tool.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/happyjiahui/z-tool/issues"
+  },
+  "homepage": "https://github.com/happyjiahui/z-tool#readme",
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}
