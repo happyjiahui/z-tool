@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.alibaba.fastjson.JSON;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;

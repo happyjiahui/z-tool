@@ -10,4 +10,9 @@
     <root level="info">
         <appender-ref ref="STDOUT"/>
     </root>
+
+    <logger name="org.apache.commons.beanutils" additivity="false">
+        <level value="ERROR"/>
+        <appender-ref ref="STDOUT"/>
+    </logger>
 </configuration>

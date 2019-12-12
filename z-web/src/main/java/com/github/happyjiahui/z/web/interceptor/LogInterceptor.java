@@ -13,13 +13,12 @@ import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.alibaba.fastjson.JSON;
+import com.github.happyjiahui.z.util.DateTimeUtils;
 import com.github.happyjiahui.z.util.HttpUtils;
+import com.github.happyjiahui.z.util.IdUtils;
 import com.github.happyjiahui.z.web.annotation.RecordLog;
 import com.github.happyjiahui.z.web.model.SysLog;
 import com.github.happyjiahui.z.web.service.ISendLogService;
-
-import cn.hutool.core.date.DateUtil;
-import cn.hutool.core.util.IdUtil;
 
 /**
  * 日志拦截
@@ -48,7 +47,7 @@ public class LogInterceptor extends HandlerInterceptorAdapter {
             return true;
         }
         SysLog sysLog = new SysLog();
-        sysLog.setId(IdUtil.simpleUUID());
+        sysLog.setId(IdUtils.simpleUUID());
         sysLog.setConsumeTime(System.currentTimeMillis());
         startTimeThreadLocal.set(sysLog);
 
@@ -65,7 +64,7 @@ public class LogInterceptor extends HandlerInterceptorAdapter {
         sysLog.setUsername(username);
         sysLog.setUserId(userId);
         sysLog.setUserAgent(httpServletRequest.getHeader("User-Agent"));
-        sysLog.setReqTime(DateUtil.now());
+        sysLog.setReqTime(DateTimeUtils.now());
         return true;
     }
 

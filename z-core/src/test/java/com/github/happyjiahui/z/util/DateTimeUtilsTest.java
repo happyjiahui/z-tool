@@ -30,14 +30,14 @@ public class DateTimeUtilsTest {
 
     @Test
     public void formatNowTest() {
-        String formatDateTime = DateTimeUtils.today();
+        String formatDateTime = DateTimeUtils.now();
         Matcher matcher = matcher(formatDateTime, YYYY_MM_DD_HH_MM_SS_PATTERN);
         Assert.assertTrue(matcher.matches());
     }
 
     @Test
     public void formatNowByPatternTest() {
-        String formatDateTime = DateTimeUtils.today(DatePattern.NORM_DATETIME_PATTERN);
+        String formatDateTime = DateTimeUtils.now(DatePattern.NORM_DATETIME_PATTERN);
         Matcher matcher = matcher(formatDateTime, YYYY_MM_DD_HH_MM_SS_PATTERN);
         Assert.assertTrue(matcher.matches());
     }

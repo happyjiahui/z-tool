@@ -7,7 +7,7 @@
     <groupId>com.github.happyjiahui</groupId>
     <artifactId>z-tool</artifactId>
     <packaging>pom</packaging>
-    <version>0.1.4</version>
+    <version>0.1.6</version>
 
     <name>z-tool</name>
     <description>Java and spring utilities</description>
@@ -20,10 +20,8 @@
 
     <licenses>
         <license>
-            <name>Apache License, Version 2.0</name>
-            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
-            <distribution>repo</distribution>
-            <comments>A business-friendly OSS license</comments>
+            <name>Mulan Permissive Software License，Version 1</name>
+            <url>http://license.coscl.org.cn/MulanPSL</url>
         </license>
     </licenses>
 
@@ -57,6 +55,7 @@
         <hutool.version>4.6.4</hutool.version>
         <slf4j.version>1.7.25</slf4j.version>
         <servlet-api.version>3.1.0</servlet-api.version>
+        <beanutils.version>1.9.4</beanutils.version>
     </properties>
 
     <dependencyManagement>
@@ -120,6 +119,11 @@
                 <artifactId>slf4j-api</artifactId>
                 <version>${slf4j.version}</version>
             </dependency>
+            <dependency>
+                <groupId>commons-beanutils</groupId>
+                <artifactId>commons-beanutils</artifactId>
+                <version>${beanutils.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -136,23 +140,14 @@
                         <encoding>UTF-8</encoding>
                     </configuration>
                 </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-source-plugin</artifactId>
-                    <version>3.0.0</version>
-                    <executions>
-                        <execution>
-                            <phase>compile</phase>
-                            <goals>
-                                <goal>jar-no-fork</goal>
-                            </goals>
-                        </execution>
-                    </executions>
-                </plugin>
             </plugins>
         </pluginManagement>
 
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
             <!-- Javadoc -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -193,6 +188,7 @@
                     </execution>
                 </executions>
             </plugin>
+            <!--设置版本号-->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>versions-maven-plugin</artifactId>

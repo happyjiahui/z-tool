@@ -3,7 +3,7 @@ package com.github.happyjiahui.z.web.model;
 import java.util.HashMap;
 import java.util.Map;
 
-import cn.hutool.core.convert.Convert;
+import org.apache.commons.beanutils.ConvertUtils;
 
 /**
  * spring web 统一响应
@@ -138,8 +138,7 @@ public class R extends HashMap<String, Object> {
         if (value == null) {
             return null;
         }
-
-        return Convert.convert(clazz, value);
+        return (T)ConvertUtils.convert(value, clazz);
     }
 
 }

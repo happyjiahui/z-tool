@@ -527,23 +527,43 @@ public class DateTimeUtils {
     }
 
     /**
-     * 格式化当前时间为时间字符串
+     * 格式化当前日期为日期字符串
      *
+     * @param pattern
+     *            日期格式
+     * @return 日期字符串
+     */
+    public static String today(String pattern) {
+        return formatLocalDate(LocalDate.now(), pattern);
+    }
+
+    /**
+     * 格式化当前日期为日期字符串（默认时间格式为：yyyy-MM-dd）
+     *
+     * @return 日期字符串
+     */
+    public static String today() {
+        return today(DatePattern.NORM_DATE_PATTERN);
+    }
+
+    /**
+     * 格式化当前时间为时间字符串
+     * 
      * @param pattern
      *            时间格式
      * @return 时间字符串
      */
-    public static String today(String pattern) {
+    public static String now(String pattern) {
         return formatLocalDateTime(LocalDateTime.now(), pattern);
     }
 
     /**
      * 格式化当前时间为时间字符串（默认时间格式为：yyyy-MM-dd HH:mm:ss）
-     *
+     * 
      * @return 时间字符串
      */
-    public static String today() {
-        return today(DatePattern.NORM_DATETIME_PATTERN);
+    public static String now() {
+        return now(DatePattern.NORM_DATETIME_PATTERN);
     }
 
     /**
