@@ -26,11 +26,15 @@ public class RocksDbHelp {
     private static final Logger LOGGER = LoggerFactory.getLogger(RocksDbHelp.class);
     private static final ConcurrentHashMap<String, RocksDB> ROCKS_DB_MAP = new ConcurrentHashMap<>();
 
+    private String dbName;
+
     public RocksDbHelp(String dbName, String dbPath) {
+        this.dbName = dbName;
         init(dbName, dbPath, null);
     }
 
     public RocksDbHelp(String dbName, String dbPath, Options options) {
+        this.dbName = dbName;
         init(dbName, dbPath, options);
     }
 
@@ -103,8 +107,6 @@ public class RocksDbHelp {
     /**
      * 从数据库中放入值
      *
-     * @param dbName
-     *            数据库名称
      * @param key
      *            key值
      * @param value
@@ -112,8 +114,8 @@ public class RocksDbHelp {
      * @param <T>
      *            value类型
      */
-    public <T extends Serializable> void put(String dbName, String key, T value) {
-        RocksDB rocksDB = getRocksDb(dbName);
+    public <T extends Serializable> void put(String key, T value) {
+        RocksDB rocksDB = getRocksDb(this.dbName);
         byte[] keyBytes = FstUtils.serializer(key);
         byte[] valueBytes = FstUtils.serializer(value);
 
@@ -127,16 +129,14 @@ public class RocksDbHelp {
     /**
      * 从数据库中取值
      *
-     * @param dbName
-     *            数据库名称
      * @param key
      *            key值
      * @param <T>
      *            value类型
      * @return value
      */
-    public <T extends Serializable> T get(String dbName, String key) {
-        RocksDB rocksDB = getRocksDb(dbName);
+    public <T extends Serializable> T get(String key) {
+        RocksDB rocksDB = getRocksDb(this.dbName);
 
         byte[] keyBytes = FstUtils.serializer(key);
         try {
@@ -150,13 +150,11 @@ public class RocksDbHelp {
     /**
      * 从数据库中删除值
      *
-     * @param dbName
-     *            数据库名称
      * @param key
      *            key值
      */
-    public void delete(String dbName, String key) {
-        RocksDB rocksDB = getRocksDb(dbName);
+    public void delete(String key) {
+        RocksDB rocksDB = getRocksDb(this.dbName);
 
         byte[] keyBytes = FstUtils.serializer(key);
         try {
@@ -169,13 +167,26 @@ public class RocksDbHelp {
     /**
      * 关闭数据库
      *
-     * @param dbName
-     *            数据库名称
      */
-    public void close(String dbName) {
-        RocksDB rocksDB = getRocksDb(dbName);
+    public void close() {
+        RocksDB rocksDB = getRocksDb(this.dbName);
         rocksDB.close();
-        ROCKS_DB_MAP.remove(dbName);
+        ROCKS_DB_MAP.remove(this.dbName);
+    }
+
+    /**
+     * 判断key是否存在
+     * 
+     * @param key
+     *            key值
+     * @param value
+     *            StringBuilder instance which is a out parameter if a value is found in block-cache.
+     * @return boolean value indicating if key does not exist or might exist.
+     */
+    public boolean exits(String key, StringBuilder value) {
+        RocksDB rocksDb = getRocksDb(this.dbName);
+        byte[] keyBytes = FstUtils.serializer(key);
+        return rocksDb.keyMayExist(keyBytes, value);
     }
 
 }

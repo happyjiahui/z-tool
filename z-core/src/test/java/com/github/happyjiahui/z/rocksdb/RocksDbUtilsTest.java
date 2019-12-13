@@ -27,29 +27,32 @@ public class RocksDbUtilsTest {
     @Test
     public void test() {
         String value = "小明";
-        rocksDbHelp.put(dbName, "a", value);
-        String a = rocksDbHelp.get(dbName, "a");
+        rocksDbHelp.put("a", value);
+        String a = rocksDbHelp.get("a");
         Assert.assertEquals(a, value);
+        StringBuilder builder = new StringBuilder();
+        boolean exits = rocksDbHelp.exits("a", builder);
+        Assert.assertTrue(exits);
     }
 
     @Test
     public void test2() {
         rocksDbHelp = new RocksDbHelp(dbName, "rocksDbTest");
         BigDecimal bigDecimal = BigDecimal.valueOf(20.12);
-        rocksDbHelp.put(dbName, "b", bigDecimal);
-        BigDecimal value = rocksDbHelp.get(dbName, "b");
+        rocksDbHelp.put("b", bigDecimal);
+        BigDecimal value = rocksDbHelp.get("b");
         Assert.assertEquals(value, bigDecimal);
-        rocksDbHelp.delete(dbName, "b");
-        BigDecimal value2 = rocksDbHelp.get(dbName, "b");
+        rocksDbHelp.delete("b");
+        BigDecimal value2 = rocksDbHelp.get("b");
         Assert.assertNull(value2);
     }
 
     @Test
     public void test3() {
-        rocksDbHelp.close(dbName);
+        rocksDbHelp.close();
         thrown.expect(UtilException.class);
         thrown.expectMessage("没有找到对应的数据库");
-        rocksDbHelp.put(dbName, "c", "hello world");
+        rocksDbHelp.put("c", "hello world");
     }
 
 }
