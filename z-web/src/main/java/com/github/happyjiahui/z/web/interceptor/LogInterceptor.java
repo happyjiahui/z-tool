@@ -12,7 +12,6 @@ import org.springframework.core.NamedThreadLocal;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
-import com.alibaba.fastjson.JSON;
 import com.github.happyjiahui.z.util.DateTimeUtils;
 import com.github.happyjiahui.z.util.HttpUtils;
 import com.github.happyjiahui.z.util.IdUtils;
@@ -85,9 +84,9 @@ public class LogInterceptor extends HandlerInterceptorAdapter {
         sysLog.setConsumeTime(endTime - sysLog.getConsumeTime());
         startTimeThreadLocal.remove();
         if (sendLogService == null) {
-            LOGGER.info(JSON.toJSONString(sysLog));
+            LOGGER.info(JsonUtils.toString(sysLog));
         } else {
-            sendLogService.sendLog(JSON.toJSONString(sysLog));
+            sendLogService.sendLog(JsonUtils.toString(sysLog));
         }
     }
 }

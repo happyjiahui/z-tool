@@ -20,7 +20,7 @@ public class ZApplicationListener implements ApplicationListener<ApplicationStar
 
         Map<String, Object> properties = new HashMap<>(16);
         // 设置控制台日志输出编码为UTF-8,防止日志乱码
-        properties.put("server.port", 9999);
+        properties.put("server.port", 10009);
         properties.put("logging.file", "classpath:logback-spring.xml");
         springApplication.setDefaultProperties(properties);
     }

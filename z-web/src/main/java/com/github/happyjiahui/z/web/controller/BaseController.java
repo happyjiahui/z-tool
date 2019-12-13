@@ -10,7 +10,7 @@ import javax.validation.ValidationException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
-import com.alibaba.fastjson.JSON;
+import com.github.happyjiahui.z.util.JsonUtils;
 
 /**
  * controller基类，提供参数校验等功能。
@@ -35,7 +35,7 @@ public class BaseController {
                 errorMap.put("message", fieldError.getDefaultMessage());
                 errorMapList.add(errorMap);
             }
-            throw new ValidationException(JSON.toJSONString(errorMapList));
+            throw new ValidationException(JsonUtils.toString(errorMapList));
         }
     }
 
