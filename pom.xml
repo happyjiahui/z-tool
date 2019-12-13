@@ -7,7 +7,7 @@
     <groupId>com.github.happyjiahui</groupId>
     <artifactId>z-tool</artifactId>
     <packaging>pom</packaging>
-    <version>0.1.7</version>
+    <version>0.1.8</version>
 
     <name>z-tool</name>
     <description>Java and spring utilities</description>
