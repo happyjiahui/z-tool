@@ -14,18 +14,19 @@ import com.github.happyjiahui.z.rocksDb.RocksDbHelp;
 
 public class RocksDbRunner implements Runnable {
 
+    private String dbName;
     private String key;
     private String value;
 
-    public RocksDbRunner(String key, String value) {
+    public RocksDbRunner(String dbName, String key, String value) {
+        this.dbName = dbName;
         this.key = key;
         this.value = value;
     }
 
     @Override
     public void run() {
-        String dbName = "test_" + this.key;
-        RocksDbHelp rocksDbHelp = new RocksDbHelp(dbName, "/tmp/rocksDbTest");
+        RocksDbHelp rocksDbHelp = new RocksDbHelp(this.dbName, "/tmp/rocksDbTest");
         rocksDbHelp.put(this.key, this.value);
         String a = rocksDbHelp.get(this.key);
         Assert.assertEquals(a, this.value);

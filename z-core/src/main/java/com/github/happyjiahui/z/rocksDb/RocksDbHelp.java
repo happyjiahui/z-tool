@@ -72,26 +72,29 @@ public class RocksDbHelp {
      *            rocksDb配置 {@link Options}
      */
     private void init(String dbName, String dbPath, Options options) {
-        boolean isExits = ROCKS_DB_MAP.containsKey(dbName);
-        if (isExits) {
+        if (ROCKS_DB_MAP.containsKey(dbName)) {
             LOGGER.info("数据库{}已经存在，直接使用。", dbName);
             return;
         }
-        RocksDB.loadLibrary();
-        if (options == null) {
-            options = getDefaultOptions();
-        }
-        try {
-            String path = dbPath + File.separator + dbName;
-            File file = new File(path);
-            if (!file.exists()) {
-                file.mkdirs();
+        synchronized (RocksDbHelp.class) {
+            if (!ROCKS_DB_MAP.containsKey(dbName)) {
+                RocksDB.loadLibrary();
+                if (options == null) {
+                    options = getDefaultOptions();
+                }
+                try {
+                    String path = dbPath + File.separator + dbName;
+                    File file = new File(path);
+                    if (!file.exists()) {
+                        file.mkdirs();
+                    }
+                    RocksDB rocksDB = RocksDB.open(options, path);
+                    ROCKS_DB_MAP.putIfAbsent(dbName, rocksDB);
+                    LOGGER.info("数据库{}初始化完成。", dbName);
+                } catch (RocksDBException e) {
+                    throw new UtilException("rocksDb 初始化失败", e);
+                }
             }
-            RocksDB rocksDB = RocksDB.open(options, path);
-            ROCKS_DB_MAP.putIfAbsent(dbName, rocksDB);
-            LOGGER.info("数据库{}初始化完成。", dbName);
-        } catch (RocksDBException e) {
-            throw new UtilException("rocksDb 初始化失败", e);
         }
     }
 

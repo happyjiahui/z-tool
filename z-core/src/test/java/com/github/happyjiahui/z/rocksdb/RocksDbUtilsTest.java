@@ -25,11 +25,23 @@ public class RocksDbUtilsTest {
     }
 
     @Test
-    public void testRunner() {
+    public void testDiffDbRunner() {
+        for (int i=0; i<10; i++) {
+            String dbName = "test_db_diff_" + i;
+            String key = "key_" + i;
+            String value = "value_" + i;
+            RocksDbRunner runner = new RocksDbRunner(dbName, key, value);
+            new Thread(runner).start();
+        }
+    }
+
+    @Test
+    public void testSameDbRunner() {
+        String dbName = "test_db_same";
         for (int i=0; i<10; i++) {
             String key = "key_" + i;
             String value = "value_" + i;
-            RocksDbRunner runner = new RocksDbRunner(key, value);
+            RocksDbRunner runner = new RocksDbRunner(dbName, key, value);
             new Thread(runner).start();
         }
     }
