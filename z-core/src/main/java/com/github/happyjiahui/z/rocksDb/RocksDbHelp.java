@@ -8,6 +8,7 @@
 
 package com.github.happyjiahui.z.rocksDb;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -81,11 +82,16 @@ public class RocksDbHelp {
             options = getDefaultOptions();
         }
         try {
-            RocksDB rocksDB = RocksDB.open(options, dbPath);
+            String path = dbPath + File.separator + dbName;
+            File file = new File(path);
+            if (!file.exists()) {
+                file.mkdirs();
+            }
+            RocksDB rocksDB = RocksDB.open(options, path);
             ROCKS_DB_MAP.putIfAbsent(dbName, rocksDB);
             LOGGER.info("数据库{}初始化完成。", dbName);
         } catch (RocksDBException e) {
-            throw new UtilException("rocksDb 初始化失败");
+            throw new UtilException("rocksDb 初始化失败", e);
         }
     }
 

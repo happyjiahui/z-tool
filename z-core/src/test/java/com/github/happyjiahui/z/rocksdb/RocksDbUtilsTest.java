@@ -21,7 +21,17 @@ public class RocksDbUtilsTest {
 
     @BeforeClass
     public static void beforeClass() throws Exception {
-        rocksDbHelp = new RocksDbHelp(dbName, "rocksDbTest");
+        rocksDbHelp = new RocksDbHelp(dbName, "/tmp/rocksDbTest");
+    }
+
+    @Test
+    public void testRunner() {
+        for (int i=0; i<10; i++) {
+            String key = "key_" + i;
+            String value = "value_" + i;
+            RocksDbRunner runner = new RocksDbRunner(key, value);
+            new Thread(runner).start();
+        }
     }
 
     @Test
