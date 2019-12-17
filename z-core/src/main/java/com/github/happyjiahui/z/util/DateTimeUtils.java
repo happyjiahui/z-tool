@@ -1,7 +1,5 @@
 package com.github.happyjiahui.z.util;
 
-import static com.github.happyjiahui.z.util.DateConstants.SHANGHAI_ZONE_ID;
-
 import java.sql.Timestamp;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
@@ -15,6 +13,8 @@ import java.util.Date;
  * @since 0.1
  */
 public class DateTimeUtils {
+
+    private static final ZoneId SHANGHAI_ZONE_ID = ZoneId.of("Asia/Shanghai");
 
     private DateTimeUtils() {}
 
