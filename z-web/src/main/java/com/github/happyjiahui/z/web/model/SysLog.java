@@ -1,12 +1,24 @@
 package com.github.happyjiahui.z.web.model;
 
 import java.io.Serializable;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import com.github.happyjiahui.z.util.DateTimeUtils;
+import com.github.happyjiahui.z.util.HttpUtils;
+import com.github.happyjiahui.z.util.IdUtils;
+import com.github.happyjiahui.z.util.JsonUtils;
 
 /**
  * @author zhaojinbing
  * @version 0.1
  */
 public class SysLog implements Serializable {
+
+    /**
+     * 日志id
+     */
     private String id;
 
     /**
@@ -65,234 +77,92 @@ public class SysLog implements Serializable {
     private String reqTime;
 
     /**
-     * @return 用户id
+     * 记录日志
+     * 
+     * @param httpServletRequest
+     *            servlet请求
+     * @param methodName
+     *            方法名称
+     * @param logContent
+     *            日志内容
+     * @return {@link SysLog}
      */
+    public SysLog recordLog(HttpServletRequest httpServletRequest, String methodName, String logContent) {
+        this.id = IdUtils.simpleUUID();
+        this.consumeTime = System.currentTimeMillis();
+        this.methodName = methodName;
+        this.userOption = logContent;
+        this.url = httpServletRequest.getServletPath();
+        this.reqMethod = httpServletRequest.getMethod();
+        Map<String, String[]> reqParameterMap = httpServletRequest.getParameterMap();
+        this.reqParameter = JsonUtils.toString(reqParameterMap);
+        this.ip = HttpUtils.getIpAddr(httpServletRequest);
+        this.userAgent = httpServletRequest.getHeader("User-Agent");
+        this.reqTime = DateTimeUtils.now();
+
+        String username = httpServletRequest.getHeader("username");
+        String userId = httpServletRequest.getHeader("userId");
+        this.username = username;
+        this.userId = userId;
+
+        return this;
+    }
+
+    public void setConsumeTime() {
+        long endTime = System.currentTimeMillis();
+        this.consumeTime = endTime - this.consumeTime;
+    }
+
     public String getId() {
         return id;
     }
 
-    /**
-     * @param id
-     *            用户id
-     */
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    /**
-     * 获取操作用户id
-     *
-     * @return user_id - 操作用户id
-     */
     public String getUserId() {
         return userId;
     }
 
-    /**
-     * 设置操作用户id
-     *
-     * @param userId
-     *            操作用户id
-     */
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    /**
-     * 获取操作用户
-     *
-     * @return username - 操作用户
-     */
     public String getUsername() {
         return username;
     }
 
-    /**
-     * 设置操作用户
-     *
-     * @param username
-     *            操作用户
-     */
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    /**
-     * 获取操作标识
-     *
-     * @return user_option - 操作标识
-     */
     public String getUserOption() {
         return userOption;
     }
 
-    /**
-     * 设置操作标识
-     *
-     * @param userOption
-     *            操作标识
-     */
-    public void setUserOption(String userOption) {
-        this.userOption = userOption;
-    }
-
-    /**
-     * 获取方法
-     *
-     * @return method_name - 方法
-     */
     public String getMethodName() {
         return methodName;
     }
 
-    /**
-     * 设置方法
-     *
-     * @param methodName
-     *            方法
-     */
-    public void setMethodName(String methodName) {
-        this.methodName = methodName;
-    }
-
-    /**
-     * 获取请求地址
-     *
-     * @return url - 请求地址
-     */
     public String getUrl() {
         return url;
     }
 
-    /**
-     * 设置请求地址
-     *
-     * @param url
-     *            请求地址
-     */
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    /**
-     * 获取请求方式
-     *
-     * @return req_method - 请求方式
-     */
     public String getReqMethod() {
         return reqMethod;
     }
 
-    /**
-     * 设置请求方式
-     *
-     * @param reqMethod
-     *            请求方式
-     */
-    public void setReqMethod(String reqMethod) {
-        this.reqMethod = reqMethod;
-    }
-
-    /**
-     * 获取请求参数
-     *
-     * @return req_parameter - 请求参数
-     */
     public String getReqParameter() {
         return reqParameter;
     }
 
-    /**
-     * 设置请求参数
-     *
-     * @param reqParameter
-     *            请求参数
-     */
-    public void setReqParameter(String reqParameter) {
-        this.reqParameter = reqParameter;
-    }
-
-    /**
-     * 获取访问ip
-     *
-     * @return ip - 访问ip
-     */
     public String getIp() {
         return ip;
     }
 
-    /**
-     * 设置访问ip
-     *
-     * @param ip
-     *            访问ip
-     */
-    public void setIp(String ip) {
-        this.ip = ip;
-    }
-
-    /**
-     * 获取用户标识
-     *
-     * @return user_agent - 用户标识
-     */
     public String getUserAgent() {
         return userAgent;
     }
 
-    /**
-     * 设置用户标识
-     *
-     * @param userAgent
-     *            用户标识
-     */
-    public void setUserAgent(String userAgent) {
-        this.userAgent = userAgent;
-    }
-
-    /**
-     * 获取请求耗时
-     *
-     * @return consume_time - 请求耗时
-     */
     public Long getConsumeTime() {
         return consumeTime;
     }
 
-    /**
-     * 设置请求耗时
-     *
-     * @param consumeTime
-     *            请求耗时
-     */
-    public void setConsumeTime(Long consumeTime) {
-        this.consumeTime = consumeTime;
-    }
-
-    /**
-     * 获取请求时间
-     *
-     * @return req_time - 请求时间
-     */
     public String getReqTime() {
         return reqTime;
     }
 
-    /**
-     * 设置请求时间
-     *
-     * @param reqTime
-     *            请求时间
-     */
-    public void setReqTime(String reqTime) {
-        this.reqTime = reqTime;
-    }
-
     @Override
     public String toString() {
-        return "SysLog{" + "id='" + id + '\'' + ", userId='" + userId + '\'' + ", username='" + username + '\''
-            + ", userOption='" + userOption + '\'' + ", methodName='" + methodName + '\'' + ", url='" + url + '\''
-            + ", reqMethod='" + reqMethod + '\'' + ", reqParameter='" + reqParameter + '\'' + ", ip='" + ip + '\''
-            + ", userAgent='" + userAgent + '\'' + ", consumeTime=" + consumeTime + ", reqTime=" + reqTime + '}';
+        return JsonUtils.toString(this);
     }
 }
