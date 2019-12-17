@@ -10,7 +10,7 @@ package com.github.happyjiahui.z.rocksdb;
 
 import org.junit.Assert;
 
-import com.github.happyjiahui.z.rocksDb.RocksDbHelp;
+import com.github.happyjiahui.z.rocksDb.SimpleRocksDB;
 
 public class RocksDbRunner implements Runnable {
 
@@ -26,9 +26,9 @@ public class RocksDbRunner implements Runnable {
 
     @Override
     public void run() {
-        RocksDbHelp rocksDbHelp = new RocksDbHelp(this.dbName, "/tmp/rocksDbTest");
-        rocksDbHelp.put(this.key, this.value);
-        String a = rocksDbHelp.get(this.key);
+        SimpleRocksDB simpleRocksDB = new SimpleRocksDB(this.dbName, "/tmp/rocksDbTest");
+        simpleRocksDB.put(this.key, this.value);
+        String a = simpleRocksDB.get(this.key);
         Assert.assertEquals(a, this.value);
     }
 }

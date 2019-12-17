@@ -19,22 +19,26 @@ import org.rocksdb.RocksDBException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.github.happyjiahui.z.exception.UtilException;
 import com.github.happyjiahui.z.util.FstUtils;
 
-public class RocksDbHelp {
+/**
+ * rocksDB 简单封装，提供易用的rocksDB常用方法
+ * 
+ * @author zhaojinbing
+ */
+public class SimpleRocksDB {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RocksDbHelp.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SimpleRocksDB.class);
     private static final ConcurrentHashMap<String, RocksDB> ROCKS_DB_MAP = new ConcurrentHashMap<>();
 
     private String dbName;
 
-    public RocksDbHelp(String dbName, String dbPath) {
+    public SimpleRocksDB(String dbName, String dbPath) {
         this.dbName = dbName;
         init(dbName, dbPath, null);
     }
 
-    public RocksDbHelp(String dbName, String dbPath, Options options) {
+    public SimpleRocksDB(String dbName, String dbPath, Options options) {
         this.dbName = dbName;
         init(dbName, dbPath, options);
     }
@@ -76,7 +80,7 @@ public class RocksDbHelp {
             LOGGER.info("数据库{}已经存在，直接使用。", dbName);
             return;
         }
-        synchronized (RocksDbHelp.class) {
+        synchronized (SimpleRocksDB.class) {
             if (!ROCKS_DB_MAP.containsKey(dbName)) {
                 RocksDB.loadLibrary();
                 if (options == null) {
@@ -92,7 +96,7 @@ public class RocksDbHelp {
                     ROCKS_DB_MAP.putIfAbsent(dbName, rocksDB);
                     LOGGER.info("数据库{}初始化完成。", dbName);
                 } catch (RocksDBException e) {
-                    throw new UtilException("rocksDb 初始化失败", e);
+                    throw new SimpleRocksDBException("rocksDb 初始化失败", e);
                 }
             }
         }
@@ -105,10 +109,10 @@ public class RocksDbHelp {
      *            数据库名称
      * @return 数据库实例 {@link RocksDB}
      */
-    private RocksDB getRocksDb(String dbName) {
+    private RocksDB getRocksDB(String dbName) {
         RocksDB rocksDB = ROCKS_DB_MAP.get(dbName);
         if (rocksDB == null) {
-            throw new UtilException("没有找到对应的数据库");
+            throw new SimpleRocksDBException("没有找到对应的数据库");
         }
         return rocksDB;
     }
@@ -124,14 +128,14 @@ public class RocksDbHelp {
      *            value类型
      */
     public <T extends Serializable> void put(String key, T value) {
-        RocksDB rocksDB = getRocksDb(this.dbName);
+        RocksDB rocksDB = getRocksDB(this.dbName);
         byte[] keyBytes = FstUtils.serializer(key);
         byte[] valueBytes = FstUtils.serializer(value);
 
         try {
             rocksDB.put(keyBytes, valueBytes);
         } catch (RocksDBException e) {
-            throw new UtilException("存入rocksDb失败", e);
+            throw new SimpleRocksDBException("存入rocksDb失败", e);
         }
     }
 
@@ -145,14 +149,14 @@ public class RocksDbHelp {
      * @return value
      */
     public <T extends Serializable> T get(String key) {
-        RocksDB rocksDB = getRocksDb(this.dbName);
+        RocksDB rocksDB = getRocksDB(this.dbName);
 
         byte[] keyBytes = FstUtils.serializer(key);
         try {
             byte[] bytes = rocksDB.get(keyBytes);
             return FstUtils.deserializer(bytes);
         } catch (RocksDBException e) {
-            throw new UtilException("从rocksDb中取值失败", e);
+            throw new SimpleRocksDBException("从rocksDb中取值失败", e);
         }
     }
 
@@ -163,13 +167,13 @@ public class RocksDbHelp {
      *            key值
      */
     public void delete(String key) {
-        RocksDB rocksDB = getRocksDb(this.dbName);
+        RocksDB rocksDB = getRocksDB(this.dbName);
 
         byte[] keyBytes = FstUtils.serializer(key);
         try {
             rocksDB.delete(keyBytes);
         } catch (RocksDBException e) {
-            throw new UtilException("从rocksDb中删除值失败", e);
+            throw new SimpleRocksDBException("从rocksDb中删除值失败", e);
         }
     }
 
@@ -178,7 +182,7 @@ public class RocksDbHelp {
      *
      */
     public void close() {
-        RocksDB rocksDB = getRocksDb(this.dbName);
+        RocksDB rocksDB = getRocksDB(this.dbName);
         rocksDB.close();
         ROCKS_DB_MAP.remove(this.dbName);
     }
@@ -193,7 +197,7 @@ public class RocksDbHelp {
      * @return boolean value indicating if key does not exist or might exist.
      */
     public boolean exits(String key, StringBuilder value) {
-        RocksDB rocksDb = getRocksDb(this.dbName);
+        RocksDB rocksDb = getRocksDB(this.dbName);
         byte[] keyBytes = FstUtils.serializer(key);
         return rocksDb.keyMayExist(keyBytes, value);
     }

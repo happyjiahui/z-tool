@@ -9,7 +9,7 @@
 package com.github.happyjiahui.z.exception;
 
 /**
- * 业务异常
+ * 工具类异常
  * 
  * @author zhaojinbing
  */

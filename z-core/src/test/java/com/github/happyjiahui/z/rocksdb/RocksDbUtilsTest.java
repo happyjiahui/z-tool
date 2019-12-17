@@ -2,6 +2,7 @@ package com.github.happyjiahui.z.rocksdb;
 
 import java.math.BigDecimal;
 
+import com.github.happyjiahui.z.rocksDb.SimpleRocksDBException;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -9,19 +10,19 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import com.github.happyjiahui.z.exception.UtilException;
-import com.github.happyjiahui.z.rocksDb.RocksDbHelp;
+import com.github.happyjiahui.z.rocksDb.SimpleRocksDB;
 
 public class RocksDbUtilsTest {
 
     private static String dbName = "test";
-    private static RocksDbHelp rocksDbHelp;
+    private static SimpleRocksDB simpleRocksDB;
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
 
     @BeforeClass
     public static void beforeClass() throws Exception {
-        rocksDbHelp = new RocksDbHelp(dbName, "/tmp/rocksDbTest");
+        simpleRocksDB = new SimpleRocksDB(dbName, "/tmp/rocksDbTest");
     }
 
     @Test
@@ -49,32 +50,32 @@ public class RocksDbUtilsTest {
     @Test
     public void test() {
         String value = "小明";
-        rocksDbHelp.put("a", value);
-        String a = rocksDbHelp.get("a");
+        simpleRocksDB.put("a", value);
+        String a = simpleRocksDB.get("a");
         Assert.assertEquals(a, value);
         StringBuilder builder = new StringBuilder();
-        boolean exits = rocksDbHelp.exits("a", builder);
+        boolean exits = simpleRocksDB.exits("a", builder);
         Assert.assertTrue(exits);
     }
 
     @Test
     public void test2() {
-        rocksDbHelp = new RocksDbHelp(dbName, "rocksDbTest");
+        simpleRocksDB = new SimpleRocksDB(dbName, "rocksDbTest");
         BigDecimal bigDecimal = BigDecimal.valueOf(20.12);
-        rocksDbHelp.put("b", bigDecimal);
-        BigDecimal value = rocksDbHelp.get("b");
+        simpleRocksDB.put("b", bigDecimal);
+        BigDecimal value = simpleRocksDB.get("b");
         Assert.assertEquals(value, bigDecimal);
-        rocksDbHelp.delete("b");
-        BigDecimal value2 = rocksDbHelp.get("b");
+        simpleRocksDB.delete("b");
+        BigDecimal value2 = simpleRocksDB.get("b");
         Assert.assertNull(value2);
     }
 
     @Test
     public void test3() {
-        rocksDbHelp.close();
-        thrown.expect(UtilException.class);
+        simpleRocksDB.close();
+        thrown.expect(SimpleRocksDBException.class);
         thrown.expectMessage("没有找到对应的数据库");
-        rocksDbHelp.put("c", "hello world");
+        simpleRocksDB.put("c", "hello world");
     }
 
 }
