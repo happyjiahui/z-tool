@@ -18,6 +18,7 @@ import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.*;
 import com.github.happyjiahui.z.exception.UtilException;
 
@@ -145,6 +146,25 @@ public class JsonUtils {
         JavaType javaType = mapper.getTypeFactory().constructMapType(Map.class, keyClass, valueClass);
         try {
             return mapper.readValue(jsonStr, javaType);
+        } catch (JsonProcessingException e) {
+            throw new UtilException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 自定义反序列化
+     * 
+     * @param jsonStr
+     *            json字符串
+     * @param typeReference
+     *            @{linked TypeReference}
+     * @param <T>
+     *            反序列化后的java对象类型
+     * @return
+     */
+    public static <T> T parseObj(String jsonStr, TypeReference<T> typeReference) {
+        try {
+            return mapper.readValue(jsonStr, typeReference);
         } catch (JsonProcessingException e) {
             throw new UtilException(e.getMessage(), e);
         }

@@ -2,6 +2,7 @@ package com.github.happyjiahui.z.util;
 
 import java.util.*;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -64,6 +65,25 @@ public class JsonUtilsTest {
         String json = JsonUtils.toString(map);
         Map<String, Object> map1 = JsonUtils.parseMap(json, String.class, Object.class);
         Assert.assertEquals(map.get("key1"), map1.get("key1"));
+    }
+
+    @Test
+    public void testParseMap2() {
+        Map<String, List<String>> temp = new HashMap<>();
+        List<String> list1 = new ArrayList<>();
+        list1.add("list1_1");
+        list1.add("list1_2");
+        list1.add("list1_3");
+        temp.put("k1", list1);
+        List<String> list2 = new ArrayList<>();
+        list2.add("list2_1");
+        list2.add("list2_2");
+        list2.add("list2_3");
+        temp.put("k2", list2);
+        String json = JsonUtils.toString(temp);
+        Map<String, List<String>> map = JsonUtils.parseObj(json, new TypeReference<Map<String, List<String>>>() {});
+        List<String> list = map.get("k1");
+        Assert.assertArrayEquals(list.toArray(), list1.toArray());
     }
 
     public static class User {
