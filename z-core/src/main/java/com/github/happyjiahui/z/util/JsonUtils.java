@@ -157,10 +157,10 @@ public class JsonUtils {
      * @param jsonStr
      *            json字符串
      * @param typeReference
-     *            {@linked TypeReference}
+     *            TypeReference
      * @param <T>
      *            反序列化后的java对象类型
-     * @return
+     * @return 反序列化后的java对象
      */
     public static <T> T parseObj(String jsonStr, TypeReference<T> typeReference) {
         try {

@@ -11,6 +11,7 @@ public interface ILineHandler {
      * 行处理
      * 
      * @param line
+     *            行字符串
      */
     void handle(String line);
 

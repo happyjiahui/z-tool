@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.Serializable;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.github.happyjiahui.z.util.FileUtils;
 import org.rocksdb.InfoLogLevel;
 import org.rocksdb.Options;
 import org.rocksdb.RocksDB;
@@ -88,10 +89,7 @@ public class SimpleRocksDB {
                 }
                 try {
                     String path = dbPath + File.separator + dbName;
-                    File file = new File(path);
-                    if (!file.exists()) {
-                        file.mkdirs();
-                    }
+                    FileUtils.mkdirIfNoExists(path);
                     RocksDB rocksDB = RocksDB.open(options, path);
                     ROCKS_DB_MAP.putIfAbsent(dbName, rocksDB);
                     LOGGER.info("数据库{}初始化完成。", dbName);

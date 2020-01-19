@@ -29,6 +29,7 @@ public class FileUtils {
      * 
      * @param filename
      *            文件名称
+     * @return 是否成功
      */
     public static boolean delete(String filename) {
         File file = new File(filename);
@@ -52,9 +53,9 @@ public class FileUtils {
      * @param filename
      *            文件名称
      */
-    public static void mkdirIfNoExists(String filename) {
+    public static void mkdirPDirIfNoExists(String filename) {
         File file = new File(filename);
-        mkdirIfNoExists(file);
+        mkdirPDirIfNoExists(file);
     }
 
     /**
@@ -63,10 +64,33 @@ public class FileUtils {
      * @param file
      *            文件
      */
-    public static void mkdirIfNoExists(File file) {
+    public static void mkdirPDirIfNoExists(File file) {
         File parentFile = file.getParentFile();
         if (!parentFile.exists()) {
             parentFile.mkdir();
+        }
+    }
+
+    /**
+     * 如果不存在则创建目录
+     * 
+     * @param dirname
+     *            目录名称
+     */
+    public static void mkdirIfNoExists(String dirname) {
+        File file = new File(dirname);
+        mkdirIfNoExists(file);
+    }
+
+    /**
+     * 如果不存在则创建目录
+     * 
+     * @param file
+     *            目录
+     */
+    public static void mkdirIfNoExists(File file) {
+        if (!file.exists()) {
+            file.mkdirs();
         }
     }
 
@@ -91,7 +115,7 @@ public class FileUtils {
         if (file.exists()) {
             return;
         }
-        mkdirIfNoExists(file);
+        mkdirPDirIfNoExists(file);
         try {
             file.createNewFile();
         } catch (IOException e) {
@@ -139,7 +163,7 @@ public class FileUtils {
      *            字节数组
      */
     public static void writeByByte(File file, byte[] bytes) {
-        mkdirIfNoExists(file);
+        mkdirPDirIfNoExists(file);
         try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
             fileOutputStream.write(bytes);
         } catch (IOException e) {
@@ -210,7 +234,7 @@ public class FileUtils {
      *            内容
      */
     public static void writeByChar(File file, String content) {
-        mkdirIfNoExists(file);
+        mkdirPDirIfNoExists(file);
         try (FileWriter fileWriter = new FileWriter(file)) {
             fileWriter.write(content);
         } catch (IOException e) {

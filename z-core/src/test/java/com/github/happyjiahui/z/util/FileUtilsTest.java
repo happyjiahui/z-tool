@@ -3,6 +3,7 @@ package com.github.happyjiahui.z.util;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -45,6 +46,14 @@ public class FileUtilsTest {
         FileUtils.appendLine(filename, list);
         List<String> lines = FileUtils.readLines(filename);
         Assert.assertArrayEquals(lines.toArray(), list.toArray());
+    }
+
+    @Test
+    public void testMkdirIfNoExists() {
+        String dirname = "out/test_dir";
+        FileUtils.mkdirIfNoExists(dirname);
+        File file = new File(dirname);
+        Assert.assertTrue(file.exists());
     }
 
 }
