@@ -157,7 +157,7 @@ public class JsonUtils {
      * @param jsonStr
      *            json字符串
      * @param typeReference
-     *            @{linked TypeReference}
+     *            {@linked TypeReference}
      * @param <T>
      *            反序列化后的java对象类型
      * @return
