@@ -1,8 +1,6 @@
 package com.github.happyjiahui.z.util;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import org.junit.Assert;
 import org.junit.Rule;
@@ -24,7 +22,7 @@ public class JsonUtilsTest {
     }
 
     @Test
-    public void toStringTest() {
+    public void parseListTest() {
         List<User> users = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             User user = new User();
@@ -41,11 +39,31 @@ public class JsonUtilsTest {
     }
 
     @Test
-    public void parseTest() {
+    public void parseBeanTest() {
         String json = "{\"name\": \"小明\", \"age\": 20}";
         User user = JsonUtils.parseObj(json, User.class);
         Assert.assertEquals(user.getName(), "小明");
         Assert.assertEquals(user.getAge(), 20);
+    }
+
+    @Test
+    public void testParseSet() {
+        Set<String> set = new HashSet<>();
+        set.add("1");
+        set.add("2");
+        String json = JsonUtils.toString(set);
+        Set<String> set1 = JsonUtils.parseSet(json, String.class);
+        Assert.assertArrayEquals(set.toArray(), set1.toArray());
+    }
+
+    @Test
+    public void testParseMap() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("key1", 1);
+        map.put("key2", "hello world");
+        String json = JsonUtils.toString(map);
+        Map<String, Object> map1 = JsonUtils.parseMap(json, String.class, Object.class);
+        Assert.assertEquals(map.get("key1"), map1.get("key1"));
     }
 
     public static class User {

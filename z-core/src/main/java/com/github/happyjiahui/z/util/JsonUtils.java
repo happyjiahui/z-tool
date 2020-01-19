@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -116,8 +117,32 @@ public class JsonUtils {
      *            java对象类型
      * @return 反序列化后的java对象
      */
-    public static <T> List<T> parseSet(String jsonStr, Class<T> tClass) {
+    public static <T> Set<T> parseSet(String jsonStr, Class<T> tClass) {
         JavaType javaType = mapper.getTypeFactory().constructParametricType(Set.class, tClass);
+        try {
+            return mapper.readValue(jsonStr, javaType);
+        } catch (JsonProcessingException e) {
+            throw new UtilException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * 将json字符串反序列化为Map
+     * 
+     * @param jsonStr
+     *            json字符串
+     * @param keyClass
+     *            key类型
+     * @param valueClass
+     *            value类型
+     * @param <K>
+     *            key对象类型
+     * @param <V>
+     *            value对象类型
+     * @return 反序列化后的java对象
+     */
+    public static <K, V> Map<K, V> parseMap(String jsonStr, Class<K> keyClass, Class<V> valueClass) {
+        JavaType javaType = mapper.getTypeFactory().constructMapType(Map.class, keyClass, valueClass);
         try {
             return mapper.readValue(jsonStr, javaType);
         } catch (JsonProcessingException e) {
