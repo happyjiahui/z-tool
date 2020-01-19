@@ -3,8 +3,15 @@ package com.github.happyjiahui.z.util;
 import com.github.happyjiahui.z.exception.UtilException;
 
 import java.io.*;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.file.OpenOption;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.nio.file.StandardOpenOption.APPEND;
 
 /**
  * @author zhaojinbing
@@ -15,6 +22,28 @@ public class FileUtils {
 
     private FileUtils() {
 
+    }
+
+    /**
+     * 删除文件
+     * 
+     * @param filename
+     *            文件名称
+     */
+    public static boolean delete(String filename) {
+        File file = new File(filename);
+        return file.delete();
+    }
+
+    /**
+     * 删除文件
+     *
+     * @param filename
+     *            文件名称
+     */
+    public static void deleteOnExit(String filename) {
+        File file = new File(filename);
+        file.deleteOnExit();
     }
 
     /**
@@ -38,6 +67,35 @@ public class FileUtils {
         File parentFile = file.getParentFile();
         if (!parentFile.exists()) {
             parentFile.mkdir();
+        }
+    }
+
+    /**
+     * 当前文件不存在则创建新文件
+     * 
+     * @param filename
+     *            文件名称
+     */
+    public static void createNewFileIfNotExists(String filename) {
+        File file = new File(filename);
+        createNewFileIfNotExists(file);
+    }
+
+    /**
+     * 当前文件不存在则创建新文件
+     * 
+     * @param file
+     *            文件
+     */
+    public static void createNewFileIfNotExists(File file) {
+        if (file.exists()) {
+            return;
+        }
+        mkdirIfNoExists(file);
+        try {
+            file.createNewFile();
+        } catch (IOException e) {
+            throw new UtilException("创建新文件失败", e);
         }
     }
 
@@ -244,6 +302,27 @@ public class FileUtils {
         } catch (IOException e) {
             throw new UtilException("读取文件失败", e);
         }
+    }
+
+    public static void appendLine(String filename, List<String> lines) {
+        createNewFileIfNotExists(filename);
+        Path path = Paths.get(filename);
+        try (FileChannel fileChannel = FileChannel.open(path, APPEND)) {
+            lines.forEach(line -> {
+                try {
+                    writeBuffer(fileChannel, line + "\r\n");
+                } catch (IOException e) {
+                    throw new UtilException("追加文件失败", e);
+                }
+            });
+        } catch (IOException e) {
+            throw new UtilException("打开文件失败", e);
+        }
+    }
+
+    private static void writeBuffer(FileChannel fileChannel, String line) throws IOException {
+        ByteBuffer byteBuffer = ByteBuffer.wrap(line.getBytes(DEFAULT_CHARSET));
+        fileChannel.write(byteBuffer);
     }
 
 }

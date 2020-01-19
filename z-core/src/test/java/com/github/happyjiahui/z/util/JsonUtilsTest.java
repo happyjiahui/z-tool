@@ -34,7 +34,7 @@ public class JsonUtilsTest {
             users.add(user);
         }
         String jsonStr = JsonUtils.toString(users);
-        List<User> list = JsonUtils.parseArray(jsonStr, User.class);
+        List<User> list = JsonUtils.parseList(jsonStr, User.class);
         Assert.assertEquals(list.size(), 10);
         Assert.assertEquals(list.get(0).getName(), "小黄0");
         Assert.assertEquals(list.get(9).getName(), "小黄9");

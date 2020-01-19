@@ -3,6 +3,8 @@ package com.github.happyjiahui.z.util;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class FileUtilsTest {
@@ -16,6 +18,7 @@ public class FileUtilsTest {
         String filename = "out/testWriteByByte.txt";
         FileUtils.writeByByte(filename, content);
         String s = FileUtils.readStr(filename);
+        FileUtils.deleteOnExit(filename);
         Assert.assertEquals(content, s);
     }
 
@@ -27,7 +30,21 @@ public class FileUtilsTest {
         List<String> lines = FileUtils.readLines(filename);
         Assert.assertEquals(lines.size(), 2);
         String firstLine = FileUtils.readLine(filename);
+        FileUtils.deleteOnExit(filename);
         Assert.assertEquals(firstLine, content1);
+    }
+
+    @Test
+    public void testAppendLine() {
+        List<String> list = new ArrayList<>();
+        list.add("hello 1");
+        list.add("hello 2");
+        list.add("hello 3");
+        String filename = "out/testAppendLine.txt";
+        FileUtils.deleteOnExit(filename);
+        FileUtils.appendLine(filename, list);
+        List<String> lines = FileUtils.readLines(filename);
+        Assert.assertArrayEquals(lines.toArray(), list.toArray());
     }
 
 }
