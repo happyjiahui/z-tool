@@ -10,16 +10,15 @@ package com.github.happyjiahui.z.rocksDb;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.github.happyjiahui.z.util.FileUtils;
-import org.rocksdb.InfoLogLevel;
-import org.rocksdb.Options;
-import org.rocksdb.RocksDB;
-import org.rocksdb.RocksDBException;
+import org.rocksdb.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.github.happyjiahui.z.util.FileUtils;
 import com.github.happyjiahui.z.util.FstUtils;
 
 /**
@@ -92,7 +91,6 @@ public class SimpleRocksDB {
                     FileUtils.mkdirIfNoExists(path);
                     RocksDB rocksDB = RocksDB.open(options, path);
                     ROCKS_DB_MAP.putIfAbsent(dbName, rocksDB);
-                    LOGGER.info("数据库{}初始化完成。", dbName);
                 } catch (RocksDBException e) {
                     throw new SimpleRocksDBException("rocksDb 初始化失败", e);
                 }
@@ -198,6 +196,34 @@ public class SimpleRocksDB {
         RocksDB rocksDb = getRocksDB(this.dbName);
         byte[] keyBytes = FstUtils.serializer(key);
         return rocksDb.keyMayExist(keyBytes, value);
+    }
+
+    /**
+     * 遍历该库下所有的数据
+     * 
+     * @param <T>
+     * @return
+     */
+    public <T extends Serializable> Map<String, T> findAll() {
+        Map<String, T> map = new HashMap<>();
+
+        RocksDB rocksDb = getRocksDB(this.dbName);
+        RocksIterator rocksIterator = rocksDb.newIterator();
+        rocksIterator.seekToFirst();
+
+        while (rocksIterator.isValid()) {
+            byte[] keyBytes = rocksIterator.key();
+            byte[] valueBytes = rocksIterator.value();
+
+            String key = FstUtils.deserializer(keyBytes);
+            T value = FstUtils.deserializer(valueBytes);
+
+            map.put(key, value);
+
+            rocksIterator.next();
+        }
+
+        return map;
     }
 
 }

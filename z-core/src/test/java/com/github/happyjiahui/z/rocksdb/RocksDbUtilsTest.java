@@ -1,6 +1,8 @@
 package com.github.happyjiahui.z.rocksdb;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Map;
 
 import com.github.happyjiahui.z.rocksDb.SimpleRocksDBException;
 import org.junit.Assert;
@@ -51,6 +53,14 @@ public class RocksDbUtilsTest {
     public void test() {
         String value = "小明";
         simpleRocksDB.put("a", value);
+        simpleRocksDB.put("b", "小明123");
+        simpleRocksDB.put("c", "小明1cccc");
+
+        Map<String, String> all = simpleRocksDB.findAll();
+        all.forEach((k, v) -> {
+            System.err.println("key:" + k + "  value:" + v);
+        });
+
         String a = simpleRocksDB.get("a");
         Assert.assertEquals(a, value);
         StringBuilder builder = new StringBuilder();
@@ -76,6 +86,17 @@ public class RocksDbUtilsTest {
         thrown.expect(SimpleRocksDBException.class);
         thrown.expectMessage("没有找到对应的数据库");
         simpleRocksDB.put("c", "hello world");
+    }
+
+    @Test
+    public void testFindAll() {
+        simpleRocksDB.put("a", "小明a");
+        simpleRocksDB.put("b", "小明b");
+        simpleRocksDB.put("c", "小明c");
+
+        Map<String, String> map = simpleRocksDB.findAll();
+
+        Assert.assertEquals(map.size(), 3);
     }
 
 }
