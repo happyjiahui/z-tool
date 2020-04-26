@@ -1,6 +1,8 @@
 package com.github.happyjiahui.z.disruptor;
 
 /**
+ * 消息事件
+ *
  * @author zhaojinbing
  */
 public class MessageEvent<T> {

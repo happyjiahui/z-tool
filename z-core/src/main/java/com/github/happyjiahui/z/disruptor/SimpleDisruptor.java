@@ -7,6 +7,8 @@ import com.lmax.disruptor.dsl.ProducerType;
 import com.lmax.disruptor.util.DaemonThreadFactory;
 
 /**
+ * disruptor封装
+ *
  * @param <T>
  * @author zhaojinbing
  */
@@ -18,6 +20,10 @@ public class SimpleDisruptor<T> {
 
     private Disruptor<MessageEvent<T>> disruptor;
 
+    /**
+     * @param bufferSize   队列大小，必须为2的指数
+     * @param eventHandler 事件处理实现类
+     */
     public SimpleDisruptor(int bufferSize, IEventHandler<T> eventHandler) {
         this.bufferSize = bufferSize;
         this.eventHandler = eventHandler;
@@ -32,11 +38,19 @@ public class SimpleDisruptor<T> {
         this.disruptor = disruptor;
     }
 
+    /**
+     * 发送消息
+     *
+     * @param message 消息体
+     */
     public void send(T message) {
         RingBuffer<MessageEvent<T>> ringBuffer = this.disruptor.getRingBuffer();
         ringBuffer.publishEvent(new MessageEventTranslator<>(), message);
     }
 
+    /**
+     * 关闭队列
+     */
     public void shutdown() {
         if (this.disruptor != null) {
             this.disruptor.shutdown();

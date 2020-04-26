@@ -2,6 +2,12 @@ package com.github.happyjiahui.z.disruptor;
 
 import com.lmax.disruptor.EventHandler;
 
+/**
+ * 消息处理
+ *
+ * @param <T>
+ * @author zhaojinbing
+ */
 public class MessageEventHandler<T> implements EventHandler<MessageEvent<T>> {
 
     private IEventHandler<T> eventHandler;
