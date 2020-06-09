@@ -3,7 +3,9 @@ package com.github.happyjiahui.z.util;
 import java.sql.Timestamp;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * 时间工具类
@@ -711,6 +713,36 @@ public class DateTimeUtils {
      */
     public static String formatTimestamp(Timestamp timestamp) {
         return formatTimestamp(timestamp, DatePattern.NORM_DATETIME_PATTERN);
+    }
+
+    /**
+     * 获取当前所在周的指定星期所对应的日期
+     * 
+     * @param week
+     *            星期
+     * @return 日期
+     */
+    public static Date getDateByWeek(int week) {
+        Calendar instance = Calendar.getInstance(Locale.CHINA);
+        instance.setFirstDayOfWeek(Calendar.MONDAY);
+        instance.setTimeInMillis(System.currentTimeMillis());
+
+        instance.set(Calendar.DAY_OF_WEEK, week);
+        return instance.getTime();
+    }
+
+    /**
+     * 获取当前所在周的指定星期所对应的日期
+     * 
+     * @param week
+     *            星期
+     * @param pattern
+     *            日期格式
+     * @return 日期字符串
+     */
+    public static String getDateByWeek(int week, String pattern) {
+        Date dateByWeek = getDateByWeek(week);
+        return DateTimeUtils.formatDate(dateByWeek, pattern);
     }
 
 }
