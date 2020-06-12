@@ -2,6 +2,7 @@ package com.github.happyjiahui.z.rocksdb;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.Map;
 
 import com.github.happyjiahui.z.rocksDb.SimpleRocksDBException;
@@ -97,6 +98,19 @@ public class RocksDbUtilsTest {
         Map<String, String> map = simpleRocksDB.findAll();
 
         Assert.assertEquals(map.size(), 3);
+    }
+
+    @Test
+    public void testBatchPut(){
+        SimpleRocksDB simpleRocksDB = new SimpleRocksDB("testBatchPut", "/tmp/rocksDbTest");
+        Map<String, Integer> valueMap = new HashMap<>();
+        for (int i=0;i<100;i++) {
+            valueMap.put("key_" + i, i);
+        }
+        simpleRocksDB.batchPut(valueMap);
+        Map<String, Integer> map = simpleRocksDB.findAll();
+
+        Assert.assertEquals(map.size(), 100);
     }
 
 }

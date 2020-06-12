@@ -114,7 +114,7 @@ public class SimpleRocksDB {
     }
 
     /**
-     * 从数据库中放入值
+     * 写入rocksDb
      *
      * @param key
      *            key值
@@ -127,9 +127,33 @@ public class SimpleRocksDB {
         RocksDB rocksDB = getRocksDB(this.dbName);
         byte[] keyBytes = FstUtils.serializer(key);
         byte[] valueBytes = FstUtils.serializer(value);
-
         try {
             rocksDB.put(keyBytes, valueBytes);
+        } catch (RocksDBException e) {
+            throw new SimpleRocksDBException("存入rocksDb失败", e);
+        }
+    }
+
+    /**
+     * 批量写入rocksDb
+     * 
+     * @param valueMap
+     *            值map
+     * @param <T>
+     *            值类型
+     */
+    public <T extends Serializable> void batchPut(Map<String, T> valueMap) {
+        RocksDB rocksDB = getRocksDB(this.dbName);
+        WriteOptions writeOptions = new WriteOptions();
+        writeOptions.setSync(true);
+        WriteBatch writeBatch = new WriteBatch();
+        valueMap.forEach((key, value) -> {
+            byte[] keyBytes = FstUtils.serializer(key);
+            byte[] valueBytes = FstUtils.serializer(value);
+            writeBatch.put(keyBytes, valueBytes);
+        });
+        try {
+            rocksDB.write(writeOptions, writeBatch);
         } catch (RocksDBException e) {
             throw new SimpleRocksDBException("存入rocksDb失败", e);
         }
