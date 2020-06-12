@@ -28,9 +28,6 @@ public class ExcelUtils {
 
     /**
      * 根据模板填充excel
-     * 
-     * excel模板分为两部分： 1.全局替换的字符串,在excel模板中用 $key$ 表示; 2.表格数据,需先在excel定义一模板行,模板的信息用json表示;
-     *
      *
      * @param templatePath
      *            模板路径
