@@ -1,19 +1,17 @@
 package com.github.happyjiahui.z.rocksdb;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.github.happyjiahui.z.rocksDb.SimpleRocksDBException;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import com.github.happyjiahui.z.exception.UtilException;
 import com.github.happyjiahui.z.rocksDb.SimpleRocksDB;
+import com.github.happyjiahui.z.rocksDb.SimpleRocksDBException;
 
 public class RocksDbUtilsTest {
 
@@ -30,7 +28,7 @@ public class RocksDbUtilsTest {
 
     @Test
     public void testDiffDbRunner() {
-        for (int i=0; i<10; i++) {
+        for (int i = 0; i < 10; i++) {
             String dbName = "test_db_diff_" + i;
             String key = "key_" + i;
             String value = "value_" + i;
@@ -42,7 +40,7 @@ public class RocksDbUtilsTest {
     @Test
     public void testSameDbRunner() {
         String dbName = "test_db_same";
-        for (int i=0; i<10; i++) {
+        for (int i = 0; i < 10; i++) {
             String key = "key_" + i;
             String value = "value_" + i;
             RocksDbRunner runner = new RocksDbRunner(dbName, key, value);
@@ -101,10 +99,10 @@ public class RocksDbUtilsTest {
     }
 
     @Test
-    public void testBatchPut(){
+    public void testBatchPut() {
         SimpleRocksDB simpleRocksDB = new SimpleRocksDB("testBatchPut", "/tmp/rocksDbTest");
         Map<String, Integer> valueMap = new HashMap<>();
-        for (int i=0;i<100;i++) {
+        for (int i = 0; i < 100; i++) {
             valueMap.put("key_" + i, i);
         }
         simpleRocksDB.batchPut(valueMap);
