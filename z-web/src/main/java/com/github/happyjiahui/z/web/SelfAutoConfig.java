@@ -17,7 +17,7 @@ import com.github.happyjiahui.z.web.service.ISendLogService;
  * @version 0.1
  */
 @Configuration
-@ComponentScan("com.github.happyjiahui.z.web.advice")
+@ComponentScan("com.github.happyjiahui.z.web.response")
 public class SelfAutoConfig implements WebMvcConfigurer {
 
     @Autowired(required = false)

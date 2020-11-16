@@ -1,2 +1,3 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.github.happyjiahui.z.web.SelfAutoConfig
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.github.happyjiahui.z.web.SelfAutoConfig,\
+  com.github.happyjiahui.z.web.response.ExceptionAdvice
 org.springframework.context.ApplicationListener=com.github.happyjiahui.z.web.ZApplicationListener
