@@ -7,7 +7,7 @@
     <groupId>com.github.happyjiahui</groupId>
     <artifactId>z-tool</artifactId>
     <packaging>pom</packaging>
-    <version>0.1.24</version>
+    <version>0.1.25</version>
 
     <name>z-tool</name>
     <description>Java and spring utilities</description>
@@ -269,10 +269,10 @@
                                 <goals>
                                     <goal>sign</goal>
                                 </goals>
-                                <configuration>
-                                    <keyname>C07AB74CD8247AAE</keyname>
-                                    <passphraseServerId>C07AB74CD8247AAE</passphraseServerId>
-                                </configuration>
+<!--                                <configuration>-->
+<!--                                    <keyname>C07AB74CD8247AAE</keyname>-->
+<!--                                    <passphraseServerId>C07AB74CD8247AAE</passphraseServerId>-->
+<!--                                </configuration>-->
                             </execution>
                         </executions>
                     </plugin>
