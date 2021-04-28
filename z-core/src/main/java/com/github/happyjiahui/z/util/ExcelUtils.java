@@ -4,12 +4,15 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections4.MapUtils;
 import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.*;
 
@@ -43,7 +46,7 @@ public class ExcelUtils {
         try (InputStream inputStream = new FileInputStream(templatePath);) {
             bytes = fillExcelByTemplate(inputStream, globalData, contentData);
         } catch (Exception e) {
-            throw new UtilException("没找到模板文件");
+            throw new UtilException("填充excel失败");
         }
 
         return bytes;
@@ -232,7 +235,7 @@ public class ExcelUtils {
             if (StringUtils.isEmpty(fieldName)) {
                 continue;
             }
-            String value = item.getOrDefault(fieldName, "").toString();
+            Object value = MapUtils.getObject(item, fieldName);
             // 记录字段值变化位置
             recordValueChangePosition(valueChangePositionMap, lastCellValueMap, position, fieldName, value);
             // 填充单元格
@@ -255,7 +258,7 @@ public class ExcelUtils {
      *            字段值
      */
     private static void recordValueChangePosition(Map<String, List<Integer>> valueChangePositionMap,
-        HashMap<Object, Object> lastCellValueMap, int position, String fieldName, String value) {
+        HashMap<Object, Object> lastCellValueMap, int position, String fieldName, Object value) {
         if (!value.equals(lastCellValueMap.get(fieldName))) {
             List<Integer> equalValuePositionList = new ArrayList<>();
             if (valueChangePositionMap.containsKey(fieldName)) {
@@ -279,20 +282,19 @@ public class ExcelUtils {
      * @param value
      *            值
      */
-    private static void fillCell(XSSFRow templateRow, XSSFRow newRow, int cellNum, String value) {
+    private static void fillCell(XSSFRow templateRow, XSSFRow newRow, int cellNum, Object value) {
         XSSFCell templateCell = templateRow.getCell(cellNum);
 
         XSSFCell newCell = newRow.createCell(cellNum);
         newCell.setCellType(templateCell.getCellType());
         newCell.setCellStyle(templateCell.getCellStyle());
 
-        if (templateCell.getCellType() == CellType.NUMERIC) {
-            if (StringUtils.isEmpty(value)) {
-                value = "0";
-            }
-            newCell.setCellValue(Double.parseDouble(value));
+        if (newCell.getCellType() == CellType.NUMERIC) {
+            newCell.setCellValue(value == null ? 0 : (double) value);
+        } else if (DateUtil.isCellDateFormatted(newCell) && value != null){
+            newCell.setCellValue((LocalDateTime) value);
         } else {
-            newCell.setCellValue(value);
+            newCell.setCellValue(value == null ? "" : String.valueOf(value));
         }
     }
 
@@ -390,6 +392,10 @@ public class ExcelUtils {
          */
         private String fieldName;
         /**
+         * 字段类型
+         */
+        private String fieldType;
+        /**
          * 合并字段名称
          */
         private String mergedFieldName;
@@ -416,6 +422,14 @@ public class ExcelUtils {
 
         public void setFieldName(String fieldName) {
             this.fieldName = fieldName;
+        }
+
+        public String getFieldType() {
+            return fieldType;
+        }
+
+        public void setFieldType(String fieldType) {
+            this.fieldType = fieldType;
         }
 
         public String getMergedFieldName() {

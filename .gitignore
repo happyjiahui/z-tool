@@ -172,4 +172,6 @@ hs_err_pid*
 
 node_modules
 z-core/rocksDbTest
+.project
+.classpath
 

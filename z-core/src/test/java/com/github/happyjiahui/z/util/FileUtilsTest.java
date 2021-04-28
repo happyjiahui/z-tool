@@ -5,13 +5,12 @@ import org.junit.Test;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class FileUtilsTest {
 
-    String content1 = "小明";
-    String content2 = "小红";
+    String content1 = "xiaoming";
+    String content2 = "xiaohong";
 
     @Test
     public void testWriteByByte() {
